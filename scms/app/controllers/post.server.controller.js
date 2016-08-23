@@ -17,10 +17,10 @@ var redisClient = require('../../config/redis');
 
 const REDIS_NEWS_PREFIX = 'news_';
 
-var getNewsFromMongo = function(req, id, cb){
+var getNewsFromMongo = function(req, id, cb) {
   console.log('run getNewsFromMongo');
   // console.log('find_id1:',id);
-  req.models.post.findOne({id: id}).exec(function(err, doc){
+  req.models.post.findOne({id: id}).exec(function(err, doc) {
     if(doc) {
       console.log('save mongo doc to redis');
       redisClient.set(REDIS_NEWS_PREFIX + id, JSON.stringify(doc));
@@ -28,9 +28,9 @@ var getNewsFromMongo = function(req, id, cb){
     return cb(err, doc);
   });
 };
-var getNewsFromRedis = function(req, id, cb){
+var getNewsFromRedis = function(req, id, cb) {
   console.log('run getNewsFromRedis');
-  redisClient.get(REDIS_NEWS_PREFIX + id, function(err, v){
+  redisClient.get(REDIS_NEWS_PREFIX + id, function(err, v) {
     if(err) return cb(err, null);
     if(!v) {
       console.log('doc not in redis');
