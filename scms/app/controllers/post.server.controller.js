@@ -47,14 +47,13 @@ var getNewsFromRedis = function(req, id, cb) {
 };
 
 module.exports = {
-  create: function(req, res, next){
+  create: function(req, res, next) {
     var message = {
       // createTime: 'shenzhen123',
       title: req.body.title,
       content: req.body.content
     }
     //console.log('req.models:', req.models);
-    console.log('message:', message);
     req.models.post.create(message, function(err, doc){
       if(err) return next(err);
       return res.json(doc);
@@ -66,7 +65,7 @@ module.exports = {
     
     req.models.post.find().exec(function(err, docs){
       if(err) return next(err);
-       console.log("docs:",docs);
+
       return res.json(docs);
     });
   },
@@ -79,20 +78,20 @@ module.exports = {
 
       if(!doc) {
           // console.log('req1',req.body);
-        getNewsFromMongo(req, id, function(err, doc){
-          if(err) return next(err);
+          getNewsFromMongo(req, id, function(err, doc){
+            if(err) return next(err);
 
-          if(!doc) {
-            return next(new Error('News not Found'));
-          }
+            if(!doc) {
+              return next(new Error('News not Found'));
+            }
+            req.news = doc;
+            return next();
+          })
+        } else {
           req.news = doc;
           return next();
-        })
-      } else {
-        req.news = doc;
-        return next();
-      }
-    })
+        }
+      })
   },
   // 获取新闻详情
   get: function(req, res, next) {
