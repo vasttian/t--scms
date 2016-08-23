@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // module.exports = {
 //   create: function(req, res, next){
 //     if(!req.query.title || !req.query.content) {

@@ -1,5 +1,5 @@
 var NewsController = require('../controllers/news.server.controller');
-<<<<<<< HEAD
+
 var PostController = require('../controllers/post.server.controller');
 
 module.exports = function(app){
@@ -20,7 +20,7 @@ module.exports = function(app){
 
   // app.param('nid', NewsController.getById);
   app.param('nid', PostController.getById);
-=======
+
 
 module.exports = function(app){
   app.route('/news')
@@ -31,5 +31,4 @@ module.exports = function(app){
     .get(NewsController.get);
 
   app.param('nid', NewsController.getById);
->>>>>>> origin/master
 };
