@@ -1,0 +1,27 @@
+{
+  "name": "scms",
+  "version": "0.1.0",
+  "description": "a simple cms system",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "cms"
+  ],
+  "authors": [
+    "Sid"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.6",
+    "bootstrap": "~3.3.5",
+    "moment": "momentjs#~2.10.6"
+  }
+}

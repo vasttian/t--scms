@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var config = require('../config/config');
+var waterline = require('../config/waterline');
+
+// 先进行 waterline 的初始化，再执行 express 实例的监听
+waterline.orm.initialize(waterline.wlconfig, function(err, models){
+  if(err) {
+    conole.log('waterline initialize failed, err:', err);
+    return;
+  }
+  // 将 waterline 的数据集合附加到 express 实例中
+  app.set('models', models.collections);
+
+  app.listen(config.port, function(){
+    console.log('app started, listening on port:', config.port);
+  });
+});
