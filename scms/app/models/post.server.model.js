@@ -9,7 +9,6 @@ module.exports = Waterline.Collection.extend({
   schema: true,
   //适配器
   attributes: {
-<<<<<<< HEAD
     title: {
       type: 'string'
     },
@@ -27,9 +26,5 @@ module.exports = Waterline.Collection.extend({
   beforeCreate: function(value, cb) {
     value.createTime = new Date();
     return cb();
-=======
-    title: {type: 'string'},
-    content: {type: 'string'}
->>>>>>> origin/master
   }
 });
