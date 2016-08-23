@@ -35,11 +35,13 @@ function NewsController($scope, NewsService){
   };
 
   $scope.openNewsDetail = function(id){
+    console.log('openNewsDetail:',id);
     $scope.loadDetail(id);
     $("#modal-detail").modal('show');
   };
 
   $scope.loadDetail = function(id){
+    console.log('loadDetail:',id);
     NewsService.detail(id).then(
       function(data){
         $scope.current = data;
@@ -55,6 +57,8 @@ function NewsController($scope, NewsService){
   $scope.loadNews = function(){
     NewsService.list().then(
       function(data){
+        console.log('data:');
+        console.log(data);
         $scope.list = data;
       },
       function(err){}
