@@ -21,7 +21,7 @@ function NewsController($scope, NewsService){
 
     NewsService.save($scope.new).then(
       function(data){
-        $("#modal-editor").modal('hide')
+        $("#modal-editor").modal('hide');
         $scope.loadNews();
       },
       function(err){
@@ -30,20 +30,31 @@ function NewsController($scope, NewsService){
     );
   };
 
-  $scope.createNews = function(){
+  $scope.createNews = function() {
     $("#modal-editor").modal('show');
   };
 
-  $scope.openNewsDetail = function(id){
-    // alert(id);
+  $scope.openNewsDetail = function(id) {
     $scope.loadDetail(id);
     $("#modal-detail").modal('show');
+  };
+
+  $scope.deleteNews = function(id) {
+    // console.log('delete:',id);
+    NewsService.delete(id).then(
+      function(data) {
+        console.log('delete success');
+        //$scope.current = data;
+        $scope.loadNews();
+      },
+      function(err) {}
+    );
   };
 
   $scope.loadDetail = function(id){
     // alert("loadDetail_id:",id);
     NewsService.detail(id).then(
-      function(data){
+      function(data) {
         $scope.current = data;
       },
       function(err){}
@@ -54,7 +65,7 @@ function NewsController($scope, NewsService){
     return moment(time).format('l');
   };
 
-  $scope.loadNews = function(){
+  $scope.loadNews = function() {
     NewsService.list().then(
       function(data){
         console.log('data:');

@@ -1,5 +1,5 @@
 angular.module('webapp')
-  .service("NewsService", ["$http", "$q", NewsService]);
+.service("NewsService", ["$http", "$q", NewsService]);
 
 
 function NewsService($http, $q) {
@@ -15,24 +15,27 @@ function NewsService($http, $q) {
     } else if('GET' === method) {
       config.params = data;
     }
-
-    $http(config).success(function(data){
+    // console.log('config:',config);
+    $http(config).success(function(data) {
       defered.resolve(data);
-    }).error(function(err){
+    }).error(function(err) {
       defered.reject(err);
     });
 
     return defered.promise;
   }
   return {
-    list: function(params){
+    list: function(params) {
       return handleRequest('GET', '/news', params);
     },
-    save: function(data){
+    save: function(data) {
       return handleRequest('POST', '/news', data);
     },
-    detail: function(id){
+    detail: function(id) {
       return handleRequest('GET', '/news/' + id);
+    },
+    delete: function(id) {
+      return handleRequest('GET', '/deletenews/' + id);
     }
   }
 }

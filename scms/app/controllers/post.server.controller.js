@@ -19,7 +19,6 @@ const REDIS_NEWS_PREFIX = 'news_';
 
 var getNewsFromMongo = function(req, id, cb) {
   console.log('run getNewsFromMongo');
-  // console.log('find_id1:',id);
   req.models.post.findOne({id: id}).exec(function(err, doc) {
     if(doc) {
       console.log('save mongo doc to redis');
@@ -45,15 +44,19 @@ var getNewsFromRedis = function(req, id, cb) {
     return cb(err, v);
   });
 };
-
+var getDeleteIdFromMongo = function(req, id, cb) {
+  console.log('run getDeleteIdFromMongo');
+  // console.log('find_MongoId:',id);
+  req.models.post.destroy({id: id}).exec(function(err) {
+    return cb(null);
+  });
+};
 module.exports = {
   create: function(req, res, next) {
     var message = {
-      // createTime: 'shenzhen123',
       title: req.body.title,
       content: req.body.content
     }
-    //console.log('req.models:', req.models);
     req.models.post.create(message, function(err, doc){
       if(err) return next(err);
       return res.json(doc);
@@ -62,41 +65,61 @@ module.exports = {
 
   // 获取列表
   list: function(req, res, next){
-    
+
     req.models.post.find().exec(function(err, docs){
       if(err) return next(err);
 
       return res.json(docs);
     });
   },
-  // 处理路由参数
+  // 处理'详情'路由参数
   getById: function(req, res, next, id){
-    console.log('getById:',id);
+    // console.log('getById:',id);
     if(!id) return next(new Error('News not Found'));
     getNewsFromRedis(req, id, function(err, doc){
       if(err) return next(err);
 
       if(!doc) {
-          // console.log('req1',req.body);
-          getNewsFromMongo(req, id, function(err, doc){
-            if(err) return next(err);
+        getNewsFromMongo(req, id, function(err, doc) {
+          if(err) return next(err);
 
-            if(!doc) {
-              return next(new Error('News not Found'));
-            }
-            req.news = doc;
-            return next();
-          })
-        } else {
+          if(!doc) {
+            return next(new Error('News not Found'));
+          }
           req.news = doc;
           return next();
-        }
-      })
+        })
+      } 
+      else {
+        req.news = doc;
+        return next();
+      }
+    });
   },
+  //处理'删除'路由参数
+  getDelId: function(req, res, next, id) {
+    // console.log('getDelId:',id);
+    if(!id) {
+      return next(new Error('DelNews not Found'));
+    }
+    getDeleteIdFromMongo(req, id, function(err) {
+      if(err) {
+        return next(err);
+      }
+      return next();
+    });
+  },
+
   // 获取新闻详情
   get: function(req, res, next) {
+    // console.log('news:',req.news)
+    return res.json(req.news);
+  },
+  //删除一条新闻
+  delete: function(req, res, next) {
+    req.news = "Delete new success!";
+    console.log('delnew:',req.news)
     return res.json(req.news);
   }
-  
 }
 
